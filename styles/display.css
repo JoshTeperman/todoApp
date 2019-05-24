@@ -1,0 +1,46 @@
+.display {
+  width: 100%;
+  height: 540px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  
+}
+.content-list {
+  margin: 0px;
+  padding: 0px;
+  list-style: none;
+  width: 80%;
+  height: auto;
+}
+
+h1 {
+  margin: 0px;
+  padding: 10px 30px;
+  width: 350px;
+  height: auto;
+  font-size: 200px;
+  line-height: 160px;
+  overflow-wrap: break-word;
+  border: 15px solid black;
+  color: black;
+}
+
+#hello::first-letter {
+  background: -webkit-linear-gradient(darkorange, rgb(255, 208, 0));
+  color: transparent;
+  -webkit-background-clip: text;
+
+}
+
+.add-task-button {
+  display: block;
+  align-self: flex-start;
+
+}
+
+.justify-content-start {
+  justify-content: flex-start;
+}

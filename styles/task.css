@@ -1,0 +1,42 @@
+.content-list li {
+  background: white;
+  width: 400px;
+  height: 30px;
+  margin: 3px 0px;
+  padding: 0 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid black;
+  box-shadow: -1px 1px black;
+}
+
+.content-list li:hover {
+  transform: scale(1.02);
+  background: rgba(44, 83, 100, 0.05);
+}
+
+.content-list p {
+  margin: 0px;
+}
+
+.task-buttons {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.delete {
+  color: red;
+  margin: 0 2.5px;
+}
+
+.delete:hover, .edit:hover {
+  transform: scale(1.2);
+}
+
+.edit {
+  color: black;
+  font-size: 12px;
+  margin: 0 2.5px;
+}

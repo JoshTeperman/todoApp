@@ -1,0 +1,18 @@
+.menu-buttons li {
+  border-radius: 30px;
+  margin: 0 20px;
+}
+
+
+.btn {
+  background: white;
+  color: black;
+  border-radius: 0px;
+  border: 1px solid black;
+  box-shadow: -1px 1px black;
+}
+
+.btn:hover {
+  background: rgb(255, 140, 0);
+  color: black;
+}
