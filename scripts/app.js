@@ -14,19 +14,32 @@ const categories = () => {
   return returnData
 }
 
+const drawHomePage = () => {
+  const title = document.createElement('h1')
+  title.innerHTML = 'Task.'
+  title.setAttribute('id', 'home-title')
+  document.querySelector('.display').appendChild(title);
+}
+
+const createNewTask = (taskName) => {
+  // const newTask = new Task(value)
+  const newLi = document.createElement('li')
+  newLi.innerHTML += `
+  <p>${taskName}</p>
+  <div class="task-buttons">
+    <i class="fas fa-times delete"></i>
+    <i class="fas fa-pen edit"></i>    
+  </div>
+  `
+  return newLi
+}
+
 
 const drawTaskList = (element) => {
   const newTaskList = drawNewUl()
   taskList.forEach((object) => {
-    let newLi = document.createElement('li')
-    newLi.innerHTML += `
-    <p>${object.name}</p>
-    <div class="task-buttons">
-      <i class="fas fa-times delete"></i>
-      <i class="fas fa-pen edit"></i>    
-    </div>
-    `
-    newTaskList.appendChild(newLi);
+    let newTask = createNewTask(object.name);
+    newTaskList.appendChild(newTask);
   })
   drawNewTaskButton()
 }
@@ -58,13 +71,30 @@ const drawCategories = () => {
 }
 
 
+
+// Click New Task Button (Create New Task Form)
 const createNewTaskEvents = () => {
   document.querySelector('#new-task-button').addEventListener('click', (event) => {
-    let form = document.createElement('input')
-    document.querySelector('.content-list').appendChild(form);
-    // form.className = ""
+    if (document.querySelector('.new-task-form') === null) {
+      const form = document.createElement('input')
+      form.className = "new-task-form"
+      form.placeholder = "What's your new task?"
+      document.querySelector('.content-list').appendChild(form);
+
+      const newTask = createNewTask(form.value)
+      newTaskList.appendChild(newTask);
+    }
   })
+
+  
+
 }
+
+// create new create new (enter)
+// add new task to list (keep form open)
+// if click away then close form
+
+
 
 // const button = document.getElementById('enter')
 // const input = document.getElementById('userinput')
@@ -141,7 +171,7 @@ const run = () => {
 
   // --> event listeners:
 
-  // view all tasks
+  // Click 'My Tasks' (View All Tasks)
   let viewTasks = document.querySelector('#view-tasks');
   
   viewTasks.addEventListener('click', (event) => {
@@ -150,7 +180,7 @@ const run = () => {
     // re-populate the page -->
     document.querySelector('.content-list') ? document.querySelector('.content-list').remove() : null
     document.querySelector('#new-task-button') ? document.querySelector('#new-task-button').remove() : null
-    document.querySelector('#hello') ? document.querySelector('#hello').remove() : null
+    document.querySelector('#home-title') ? document.querySelector('#home-title').remove() : null
     drawTaskList();
 
     // create task-event-listeners
@@ -161,7 +191,7 @@ const run = () => {
     
   })
   
-  // view all categories
+  // Cick 'Categories' (View All Categories)
   let viewCategories = document.querySelector('#view-categories')  
   viewCategories.addEventListener('click', (event) => {
     const display = document.querySelector('.display')
@@ -169,7 +199,7 @@ const run = () => {
     // re-populate the page -->
     document.querySelector('.content-list') ? document.querySelector('.content-list').remove() : null
     document.querySelector('#new-task-button') ? document.querySelector('#new-task-button').remove() : null
-    document.querySelector('#hello') ? document.querySelector('#hello').remove() : null
+    document.querySelector('#home-title') ? document.querySelector('#home-title').remove() : null
     drawCategories()
 
     // create task-event-listeners -->
@@ -182,23 +212,16 @@ const run = () => {
 
   })
   
-  // view home
+  // Click 'Home' (View Home Screen)
   let home = document.querySelector('#home');
   home.addEventListener('click', (event) => {
+
     // repopulate the page -->
     document.querySelector('.content-list') ? document.querySelector('.content-list').remove() : null
     document.querySelector('#new-task-button') ? document.querySelector('#new-task-button').remove() : null
-    document.querySelector('#hello') ? document.querySelector('#hello').remove() : null
+    document.querySelector('#home-title') ? document.querySelector('#home-title').remove() : null
+    drawHomePage();
 
-    let hello = document.createElement('h1')
-    hello.textContent = 'Hello.'
-    hello.setAttribute('id', 'hello')
-    const display = document.querySelector('.display')
-    if (document.querySelector('.content-list')) {
-      const currentContent = document.querySelector('.content-list') 
-      console.log(currentContent)
-      display.replaceChild(hello, currentContent)
-    }
     document.querySelector('.display').style.justifyContent = 'center'
   })
 
@@ -212,7 +235,7 @@ const run = () => {
 //   input.value = ''
 // })
 
-// display.removeChild('#hello')
+// display.removeChild('#home-title')
 // display tasks
 // click on 'Home'
 // tasks.replaceChile(oldChild)

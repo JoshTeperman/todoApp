@@ -1,6 +1,5 @@
 @import './navbar.css';
 @import './task.css';
-@import './menu.css';
 @import './display.css';
 @import './buttons.css';
 
@@ -20,16 +19,13 @@ body {
 }
 
 .content {
-  width: 500px;
+  width: 415px;
   background: lightgray;
   height: auto;
   min-height: 600px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  align-items: center;
   box-shadow: -3px 3px black;
 } 
 
-.btn {
-  height: 37px;
-}
