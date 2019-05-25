@@ -14,19 +14,35 @@ const categories = () => {
   return returnData
 }
 
+const drawHomePage = () => {
+  const title = document.createElement('h1')
+  title.innerHTML = 'Task.'
+  title.setAttribute('id', 'home-title')
+  document.querySelector('.display').appendChild(title);
+}
+
+const createNewTask = (taskName) => {
+  // const newTask = new Task(value)
+  const newLi = document.createElement('li')
+  newLi.innerHTML += `
+  <p>${taskName}</p>
+  <div class="task-buttons">
+    <i class="fas fa-times delete"></i>
+    <i class="fas fa-pen edit"></i>    
+  </div>
+  `
+  createEditEvents();
+  createDeleteEvents();
+  return newLi
+
+}
+
 
 const drawTaskList = (element) => {
   const newTaskList = drawNewUl()
   taskList.forEach((object) => {
-    let newLi = document.createElement('li')
-    newLi.innerHTML += `
-    <p>${object.name}</p>
-    <div class="task-buttons">
-      <i class="fas fa-times delete"></i>
-      <i class="fas fa-pen edit"></i>    
-    </div>
-    `
-    newTaskList.appendChild(newLi);
+    let newTask = createNewTask(object.name);
+    newTaskList.appendChild(newTask);
   })
   drawNewTaskButton()
 }
@@ -39,9 +55,9 @@ const drawNewUl = () => {
 }
 
 const drawNewTaskButton = () => {
-  let button = document.createElement('div')
+  let button = document.createElement('span')
   button.setAttribute('id', 'new-task-button')
-  button.innerHTML = `<i class="fas fa-plus"></i>`
+  button.innerHTML = `<i class="fas fa-plus task-button"></i>`
   document.querySelector('.display').appendChild(button)
 }
 
@@ -57,14 +73,99 @@ const drawCategories = () => {
   document.querySelector('.display').appendChild(newList);
 }
 
-
-const createNewTaskEvents = () => {
-  document.querySelector('#new-task-button').addEventListener('click', (event) => {
-    let form = document.createElement('input')
-    document.querySelector('.content-list').appendChild(form);
-    // form.className = ""
-  })
+const drawCancelTaskButton = () => {
+  const button = document.createElement('span')
+  button.setAttribute('id', 'cancel-task-button')
+  button.innerHTML = `<i class="fas fa-ban task-button"></i>`
+  document.querySelector('.display').appendChild(button)
 }
+
+const drawSaveTaskButton = () => {
+  const button = document.createElement('span')
+  button.setAttribute('id', 'save-task-button')
+  button.innerHTML = `<i class="fas fa-check task-button"></i>`
+  document.querySelector('.display').appendChild(button)
+}
+
+const drawNewTaskForm = () => {
+  const taskList = document.querySelector('.content-list');
+  const form = document.createElement('input')
+  form.className = "new-task-form"
+  form.placeholder = "What's your new task?"
+  taskList.appendChild(form);
+}
+
+// Click New Task Button (Create New Task Form)
+const createNewTaskEvents = () => {
+
+  // Click New Task Button -->
+  document.querySelector('#new-task-button').addEventListener('click', (event) => {
+    if (document.querySelector('.new-task-form') === null) {
+      drawNewTaskForm();
+      clickInsideFormEvent();
+      drawCancelTaskButton();
+      drawSaveTaskButton();
+      cancelTaskEvent();
+      newTaskEnterKeypressEvent();
+      newTaskButtonClickEvent();
+    }
+  })
+
+  const clickInsideFormEvent = () => {
+    const form = document.querySelector('.new-task-form')
+    form.addEventListener('click', () => {
+      form.placeholder = ""
+    })
+  }
+
+  const cancelTaskEvent = () => {  
+    const cancelButton = document.querySelector('#cancel-task-button')
+    cancelButton.addEventListener('click', (event) => {
+      document.querySelector('.new-task-form').remove();
+      cancelButton.remove();
+      document.querySelector('#save-task-button').remove()
+
+    })
+  }
+  
+  const newTaskEnterKeypressEvent = () => {
+    const input = document.querySelector('input')
+    input.addEventListener('keypress', (event) => {
+      if (event.keyCode == 13 && input.value.length > 0) {
+        const newTask = createNewTask(input.value)
+        document.querySelector('.content-list').appendChild(newTask);
+        input.remove();
+        document.querySelector('#save-task-button').remove();
+        document.querySelector('#cancel-task-button').remove();
+      }
+    })
+  }
+
+  const newTaskButtonClickEvent = () => {
+    const input = document.querySelector('input')
+    const button = document.querySelector('#save-task-button')
+    console.log('early clicked')
+
+    button.addEventListener('click', (event) => {
+      if (input.value.length > 0) {
+        console.log('clicked')
+        const newTask = createNewTask(input.value)
+        document.querySelector('.content-list').appendChild(newTask);
+        input.remove();
+        document.querySelector('#save-task-button').remove();
+        document.querySelector('#cancel-task-button').remove();
+      }
+    })
+  
+  }
+
+}
+
+// create new create new (enter)
+// add new task to list (keep form open)
+// if click away then close form
+
+
 
 // const button = document.getElementById('enter')
 // const input = document.getElementById('userinput')
@@ -101,9 +202,7 @@ const createDeleteEvents = () => {
   let deleteButton = document.querySelectorAll('.delete');
   deleteButton.forEach((node) => {
     node.addEventListener('click', (event) => {
-      task = event.target.parentNode.parentNode;
-      parentNode = task.parentNode;
-      deleteTask(task, parentNode)
+      deleteTask(event);
     })
   })
 }
@@ -112,7 +211,6 @@ const createEditEvents = () => {
   let editButton = document.querySelectorAll('.edit');
   editButton.forEach((node) => {
     node.addEventListener('click', (event) => {
-      task = event.target.parentNode.parentNode;
       return editTask(task)
     })
   })
@@ -122,14 +220,23 @@ const createFilterEvents = () => {
   // code here
 }
 
-const deleteTask = (task, parentNode) => {
-  parentNode.removeChild(task);
+const deleteTask = (event) => {
+  task = event.target.parentNode.parentNode;
+  task.remove()
 }
 
 const editTask = (task) => {
   const editedTask = prompt("Please edit your task", `${task.childNodes[1].innerHTML}`)
   const p = task.childNodes[1]
   p.innerHTML = `${editedTask}`
+}
+
+const refreshPage = () => {
+  document.querySelector('.content-list') ? document.querySelector('.content-list').remove() : null
+  document.querySelector('#new-task-button') ? document.querySelector('#new-task-button').remove() : null
+  document.querySelector('#save-task-button') ? document.querySelector('#save-task-button').remove() : null
+  document.querySelector('#cancel-task-button') ? document.querySelector('#cancel-task-button').remove() : null
+  document.querySelector('#home-title') ? document.querySelector('#home-title').remove() : null
 }
 
 
@@ -141,16 +248,13 @@ const run = () => {
 
   // --> event listeners:
 
-  // view all tasks
+  // Click 'My Tasks' (View All Tasks)
   let viewTasks = document.querySelector('#view-tasks');
   
   viewTasks.addEventListener('click', (event) => {
     const display = document.querySelector('.display');
 
-    // re-populate the page -->
-    document.querySelector('.content-list') ? document.querySelector('.content-list').remove() : null
-    document.querySelector('#new-task-button') ? document.querySelector('#new-task-button').remove() : null
-    document.querySelector('#hello') ? document.querySelector('#hello').remove() : null
+    refreshPage();
     drawTaskList();
 
     // create task-event-listeners
@@ -161,44 +265,27 @@ const run = () => {
     
   })
   
-  // view all categories
+  // Cick 'Categories' (View All Categories)
   let viewCategories = document.querySelector('#view-categories')  
   viewCategories.addEventListener('click', (event) => {
     const display = document.querySelector('.display')
 
-    // re-populate the page -->
-    document.querySelector('.content-list') ? document.querySelector('.content-list').remove() : null
-    document.querySelector('#new-task-button') ? document.querySelector('#new-task-button').remove() : null
-    document.querySelector('#hello') ? document.querySelector('#hello').remove() : null
-    drawCategories()
+    refreshPage();
+    drawCategories();
 
-    // create task-event-listeners -->
+    // create category-event-listeners -->
     // createFilterEvents();
     
     document.querySelector('.display').style.justifyContent = 'flex-start'
-
-
-
-
   })
   
-  // view home
+  // Click 'Home' (View Home Screen)
   let home = document.querySelector('#home');
   home.addEventListener('click', (event) => {
-    // repopulate the page -->
-    document.querySelector('.content-list') ? document.querySelector('.content-list').remove() : null
-    document.querySelector('#new-task-button') ? document.querySelector('#new-task-button').remove() : null
-    document.querySelector('#hello') ? document.querySelector('#hello').remove() : null
 
-    let hello = document.createElement('h1')
-    hello.textContent = 'Hello.'
-    hello.setAttribute('id', 'hello')
-    const display = document.querySelector('.display')
-    if (document.querySelector('.content-list')) {
-      const currentContent = document.querySelector('.content-list') 
-      console.log(currentContent)
-      display.replaceChild(hello, currentContent)
-    }
+    refreshPage();
+    drawHomePage();
+
     document.querySelector('.display').style.justifyContent = 'center'
   })
 
@@ -212,7 +299,7 @@ const run = () => {
 //   input.value = ''
 // })
 
-// display.removeChild('#hello')
+// display.removeChild('#home-title')
 // display tasks
 // click on 'Home'
 // tasks.replaceChile(oldChild)
@@ -262,4 +349,3 @@ $(function() {
 // });
 
 // });
-

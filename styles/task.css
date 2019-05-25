@@ -40,3 +40,32 @@
   font-size: 12px;
   margin: 0 2.5px;
 }
+
+.new-task-form {
+  width: 100%;
+  background: rgb(255, 140, 0);
+  border: 2px solid black;
+  font-style: italic;
+  /* box-shadow: -1px 1px black; */
+}
+
+.new-task-form::placeholder {
+  color: white;
+}
+
+.task-button {
+  align-self: flex-start;
+  margin-left: 8px;
+}
+
+.task-button:hover {
+  transform: scale(1.2)
+}
+
+#cancel-task-button {
+  color: red;
+}
+
+#save-task-button{ 
+  color: green;
+}
