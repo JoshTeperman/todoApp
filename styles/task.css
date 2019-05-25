@@ -53,8 +53,19 @@
   color: white;
 }
 
-#new-task-button {
-  display: block;
+.task-button {
   align-self: flex-start;
   margin-left: 8px;
+}
+
+.task-button:hover {
+  transform: scale(1.2)
+}
+
+#cancel-task-button {
+  color: red;
+}
+
+#save-task-button{ 
+  color: green;
 }
