@@ -21,10 +21,10 @@ h1 {
   padding: 10px 30px;
   width: 350px;
   height: auto;
-  font-size: 200px;
+  font-size: 120px;
   line-height: 160px;
   overflow-wrap: break-word;
-  border: 15px solid black;
+  /* border: 15px solid black; */
   color: black;
 }
 
